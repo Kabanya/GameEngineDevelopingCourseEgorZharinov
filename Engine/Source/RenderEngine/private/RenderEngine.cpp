@@ -9,11 +9,11 @@ namespace GameEngine::Render
 		m_rhi = HAL::RHIHelper::CreateRHI("D3D12");
 		m_rhi->Init();
 
-		//Pyramid
-		RenderObject::Ptr pyramid = std::make_shared<RenderObject>();
-		m_RenderObjects.push_back(pyramid);
-		pyramid->m_mesh = m_rhi->CreatePyramidMesh();
-		pyramid->m_material = m_rhi->GetMaterial(pyramid->m_mesh->GetName());
+		//Stele
+		RenderObject::Ptr stele = std::make_shared<RenderObject>();
+		m_RenderObjects.push_back(stele);
+		stele->m_mesh = m_rhi->CreateSteleMesh();
+		stele->m_material = m_rhi->GetMaterial(stele->m_mesh->GetName());
 
 
 		m_rhi->ExecuteCommandLists();

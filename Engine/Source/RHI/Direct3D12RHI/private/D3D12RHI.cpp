@@ -28,33 +28,40 @@ namespace GameEngine
 		}
 
 		
-		Mesh::Ptr D3D12RHI::CreatePyramidMesh()
+		Mesh::Ptr D3D12RHI::CreateSteleMesh()
 		{
-			array<Vertex, 5> vertices =
+			std::vector<Vertex> vertices =
 			{
-				Vertex({ Math::Vector3f(-1.0f, -1.0f, -1.0f), Math::Vector4f((float*)&DirectX::Colors::BlueViolet) }),
-				Vertex({ Math::Vector3f(-1.0f, -1.0f, +4.0f), Math::Vector4f((float*)&DirectX::Colors::DarkRed) }),
-				Vertex({ Math::Vector3f(+1.0f, -1.0f, +4.0f), Math::Vector4f((float*)&DirectX::Colors::Lavender) }),
-				Vertex({ Math::Vector3f(+1.0f, -1.0f, -1.0f), Math::Vector4f((float*)&DirectX::Colors::DarkRed) }),
-				Vertex({ Math::Vector3f(0.0f, +2.0f, 0.0f), Math::Vector4f((float*)&DirectX::Colors::White) })
+				// Rectangle base
+				{ Math::Vector3f(-1.0f, -2.0f, -0.5f), Math::Vector4f((float*)&DirectX::Colors::Turquoise) },
+				{ Math::Vector3f(-1.0f, -2.0f, +0.5f), Math::Vector4f((float*)&DirectX::Colors::Turquoise) },
+				{ Math::Vector3f(+1.0f, -2.0f, +0.5f), Math::Vector4f((float*)&DirectX::Colors::Transparent) },
+				{ Math::Vector3f(+1.0f, -2.0f, -0.5f), Math::Vector4f((float*)&DirectX::Colors::Transparent) },
+				{ Math::Vector3f(-1.0f, +2.0f, -0.5f), Math::Vector4f((float*)&DirectX::Colors::DarkBlue) },
+				{ Math::Vector3f(-1.0f, +2.0f, +0.5f), Math::Vector4f((float*)&DirectX::Colors::DarkBlue) },
+				{ Math::Vector3f(+1.0f, +2.0f, +0.5f), Math::Vector4f((float*)&DirectX::Colors::BlueViolet) },
+				{ Math::Vector3f(+1.0f, +2.0f, -0.5f), Math::Vector4f((float*)&DirectX::Colors::BlueViolet) },
+				// Triangle top
+				{ Math::Vector3f(0.0f, +3.0f, 0.0f), Math::Vector4f((float*)&DirectX::Colors::Fuchsia) }
 			};
 
-			array<uint16_t, 18> indices =
+			std::vector<uint16_t> indices =
 			{
-				// Base
-				0, 1, 2,
-				0, 2, 3,
-				// Front face
-				0, 4, 1,
-				// Right face
-				1, 4, 2,
-				// Back face
-				2, 4, 3,
-				// Left face
-				3, 4, 0
+				// Rectangle base
+				0, 1, 2,  0, 2, 3,  // Bottom face
+				4, 7, 6,  4, 6, 5,  // Top face
+				0, 4, 5,  0, 5, 1,  // Left face
+				2, 6, 7,  2, 7, 3,  // Right face
+				0, 3, 7,  0, 7, 4,  // Front face
+				1, 5, 6,  1, 6, 2,  // Back face
+				// Triangle top
+				4, 8, 5,  // Front triangle
+				5, 8, 6,  // Right triangle
+				6, 8, 7,  // Back triangle
+				7, 8, 4   // Left triangle
 			};
 
-			return m_d3d12Private->CreateMesh(vertices.begin(), vertices.size(), sizeof(Vertex), indices.begin(), indices.size(), sizeof(uint16_t));
+			return m_d3d12Private->CreateMesh(vertices.data(), vertices.size(), sizeof(Vertex), indices.data(), indices.size(), sizeof(uint16_t));
 		}
 
 

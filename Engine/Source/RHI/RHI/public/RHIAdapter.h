@@ -25,9 +25,9 @@ namespace GameEngine
 			using Ptr = std::shared_ptr<RHIAdapter>;
 
 		public:
+			virtual Mesh::Ptr CreateSteleMesh() = 0;
 			virtual void Init() = 0;
 			virtual void Update(Mesh::Ptr mesh, Material::Ptr material) = 0;
-			virtual Mesh::Ptr CreatePyramidMesh() = 0;
 			virtual Material::Ptr GetMaterial(const std::string& name) = 0;
 			virtual void ExecuteCommandLists() = 0;
 			virtual void Flush() = 0;
