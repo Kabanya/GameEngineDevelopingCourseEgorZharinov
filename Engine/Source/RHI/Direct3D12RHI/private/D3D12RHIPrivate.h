@@ -82,6 +82,8 @@ namespace GameEngine
 			D3D12_VIEWPORT m_ScreenViewport;
 			D3D12_RECT m_ScissorRect;
 
+			float m_rotationAngle = 0.0f;
+
 		private:
 			void CreateFactory();
 			void CreateDevice();

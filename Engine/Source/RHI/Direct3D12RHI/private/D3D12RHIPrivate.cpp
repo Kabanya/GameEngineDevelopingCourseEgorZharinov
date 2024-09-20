@@ -253,25 +253,41 @@ namespace GameEngine
 			D3D12Mesh d3d12Mesh = *reinterpret_cast<D3D12Mesh*>(mesh.get());
 			D3D12Material d3d12Material = *reinterpret_cast<D3D12Material*>(material.get());
 
+			// Camera setup
 			float mTheta = 1.5f * DirectX::XM_PI;
 			float mPhi = DirectX::XM_PIDIV4;
-			float mRadius = 5.0f;
+			float mRadius = 15.0f;
 
 			// Convert Spherical to Cartesian coordinates.
 			float x = mRadius * sinf(mPhi) * cosf(mTheta);
 			float z = mRadius * sinf(mPhi) * sinf(mTheta);
 			float y = mRadius * cosf(mPhi);
 
-			// Build the view matrix.
+			// Update rotation angle 
+			m_rotationAngle += 0.001f; 
+			if (m_rotationAngle > 2 * DirectX::XM_PI)
+				m_rotationAngle -= 2 * DirectX::XM_PI;
+
+			// Create rotation matrix (only around Y-axis)
+			Math::Matrix4x4f rotationMatrix = Math::Matrix4x4f::Identity();
+			float cosTheta = std::cos(m_rotationAngle);
+			float sinTheta = std::sin(m_rotationAngle);
+			rotationMatrix.SetElement(cosTheta, 0, 0);
+			rotationMatrix.SetElement(-sinTheta, 0, 2);
+			rotationMatrix.SetElement(sinTheta, 2, 0);
+			rotationMatrix.SetElement(cosTheta, 2, 2);
+
+			// Build the view matrix
 			Math::Vector3f pos = Math::Vector3f(x, y, z);
 			Math::Vector3f target = Math::Vector3f::Zero();
 			Math::Vector3f up = Math::Vector3f(0.0f, 1.0f, 0.0f);
 
-			// Projection and view matrices should be a part of Camera class
 			Math::Matrix4x4f view = Core::Math::ViewMatrixLH(pos, target, up);
 			Math::Matrix4x4f proj = Core::Math::ProjectionMatrixLH(0.25f * DirectX::XM_PI, Core::MainWindowsApplication->GetAspectRatio(), 1.0f, 1000.0f);
 
-			Math::Matrix4x4f world = Math::Matrix4x4f::Identity();
+			// Apply rotation to world matrix
+			Math::Matrix4x4f world = rotationMatrix;
+
 			Math::Matrix4x4f worldViewProj = world * view * proj;
 
 			ObjectConstants objConstants;
