@@ -24,6 +24,7 @@ namespace GameEngine
 	private:
 		// The main idea behind having this functor is to abstract the common code from the platfrom-specific code
 		std::function<bool()> PlatformLoop = nullptr;
+		float speedObj = 2.5f;
 
 	private:
 		Core::Timer m_GameTimer;  

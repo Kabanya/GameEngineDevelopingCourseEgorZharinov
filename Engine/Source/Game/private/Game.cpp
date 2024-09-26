@@ -2,6 +2,7 @@
 #include <DefaultGeometry.h>
 #include <Game.h>
 #include <GameObject.h>
+#include <windows.h>
 
 namespace GameEngine
 {
@@ -17,7 +18,7 @@ namespace GameEngine
 		m_renderThread = std::make_unique<Render::RenderThread>();
 
 		// How many objects do we want to create
-		for (int i = 0; i < 3; ++i)
+		for (int i = 0; i < 1; ++i)
 		{
 			m_Objects.push_back(new GameObject());
 			Render::RenderObject** renderObject = m_Objects.back()->GetRenderObjectRef();
@@ -53,10 +54,21 @@ namespace GameEngine
 		{
 			Math::Vector3f pos = m_Objects[i]->GetPosition(); //update position 
 
-			// Showcase
+			//pos.x -= 0.5f * dt; // A
+			//pos.x += 0.5f * dt; // D
+			//pos.z += 0.5f * dt; // W
+			//pos.z -= 0.5f * dt; // S
+			//pos.y += 0.5f * dt; // Space
+			//pos.y -= 0.5f * dt; // Ctrl
+			//& 0x8000 pressed or not
 			if (i == 0)
 			{
-				pos.x -= 1.5f * dt;
+				if (GetKeyState('A') & 0x8000) pos.x -= speedObj * dt; // A
+				if (GetKeyState('D') & 0x8000) pos.x += speedObj * dt; // D
+				if (GetKeyState('W') & 0x8000) pos.z += speedObj * dt; // W
+				if (GetKeyState('S') & 0x8000) pos.z -= speedObj * dt; // S
+				if (GetKeyState(VK_SPACE) & 0x8000) pos.y += speedObj * dt; // Space
+				if (GetKeyState(VK_CONTROL) & 0x8000) pos.y -= speedObj * dt; // Ctrl
 			}
 			else if (i == 1)
 			{
