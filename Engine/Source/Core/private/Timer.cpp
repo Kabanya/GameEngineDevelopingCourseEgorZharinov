@@ -31,7 +31,7 @@ namespace GameEngine::Core
 
 	void Timer::Reset()
 	{
-		m_PrevTimePoint = m_CurrTimePoint = m_BeginTimePoint = std::chrono::high_resolution_clock::now();
+		m_PrevTimePoint = m_CurrTimePoint = m_BeginTimePoint = std::chrono::high_resolution_clock::now(); //OS clock 
 	}
 
 	float Timer::GetDeltaTime() const

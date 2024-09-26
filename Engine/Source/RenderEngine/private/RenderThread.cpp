@@ -7,7 +7,7 @@ using namespace GameEngine::Render;
 namespace
 {
 	// Function to run render thread
-	static void RunThisThread(void* thisPtr)
+	static void RunThisThread(void* thisPtr) //helper function
 	{
 		RenderThread* const self = reinterpret_cast<RenderThread*>(thisPtr);
 		self->Run();
@@ -16,11 +16,11 @@ namespace
 
 namespace GameEngine::Render
 {
-	RenderThread::RenderThread()
+	RenderThread::RenderThread() //create the thread
 	{
 		m_MainThreadId = std::this_thread::get_id();
 
-		frameMutex[m_CurMainFrame].lock();
+		frameMutex[m_CurMainFrame].lock(); // *can ast prof. why it mutexed
 
 		m_Thread = std::make_unique<std::jthread>(RunThisThread, this);
 		m_Thread->detach();
@@ -34,7 +34,7 @@ namespace GameEngine::Render
 	// Render Loop
 	void RenderThread::Run()
 	{
-		m_RenderThreadId = std::this_thread::get_id();
+		m_RenderThreadId = std::this_thread::get_id(); 
 
 		m_RenderEngine = new RenderEngine();
 
@@ -42,11 +42,11 @@ namespace GameEngine::Render
 		{
 			std::lock_guard<std::mutex> lock(frameMutex[m_CurrRenderFrame]);
 
-			ProcessCommands();
+			ProcessCommands(); //for current frame
 
 			m_RenderEngine->Update(m_CurrRenderFrame);
 
-			OnEndFrame();
+			OnEndFrame();  // egalement au switchFrame
 		}
 	}
 
@@ -56,7 +56,7 @@ namespace GameEngine::Render
 	}
 
 	template<typename... Args>
-	void RenderThread::EnqueueCommand(ERC command, Args... args)
+	void RenderThread::EnqueueCommand(ERC command, Args... args) //EnqueueCommand - event based messaging!
 	{
 		switch (command)
 		{
@@ -64,7 +64,7 @@ namespace GameEngine::Render
 			m_commands[m_CurMainFrame].push_back(
 				new EnqueuedRenderCommand(
 					[this](RenderCore::Geometry::Ptr geometry, RenderObject** renderObject) { m_RenderEngine->CreateRenderObject(geometry, renderObject); },
-					std::forward<Args>(args)...)
+					std::forward<Args>(args)...) //lamda function
 			);
 			break;
 		default:
@@ -100,15 +100,15 @@ namespace GameEngine::Render
 	{
 		if (IsRenderThread())
 		{
-			m_CurrRenderFrame = GetNextFrame(m_CurrRenderFrame);
+			m_CurrRenderFrame = GetNextFrame(m_CurrRenderFrame); // get number of next buffer // 117
 		}
-		else
+		else 
 		{
 			frameMutex[m_CurMainFrame].unlock();
 
 			m_CurMainFrame = GetNextFrame(m_CurMainFrame);
 
-			frameMutex[m_CurMainFrame].lock();
+			frameMutex[m_CurMainFrame].lock(); 
 		}
 	}
 

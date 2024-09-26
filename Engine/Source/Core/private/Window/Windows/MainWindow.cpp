@@ -12,7 +12,7 @@ namespace GameEngine::Core
 {
 	Window* g_MainWindowsApplication = nullptr;
 
-	LRESULT CALLBACK WindowProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
+	LRESULT CALLBACK WindowProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam) //while calling DispatchMessage
 	{
 		switch (msg)
 		{
@@ -49,7 +49,7 @@ namespace GameEngine::Core
 		WNDCLASSEX wc;
 		wc.cbSize = sizeof(WNDCLASSEX);
 		wc.style = CS_HREDRAW | CS_VREDRAW;
-		wc.lpfnWndProc = WindowProc;
+		wc.lpfnWndProc = WindowProc; // pass a function pointer 
 		wc.cbClsExtra = 0;
 		wc.cbWndExtra = 0;
 		wc.hInstance = hInstance;

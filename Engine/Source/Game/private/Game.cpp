@@ -21,26 +21,27 @@ namespace GameEngine
 		{
 			m_Objects.push_back(new GameObject());
 			Render::RenderObject** renderObject = m_Objects.back()->GetRenderObjectRef();
-			m_renderThread->EnqueueCommand(Render::ERC::CreateRenderObject, RenderCore::DefaultGeometry::Cube(), renderObject);
+			m_renderThread->EnqueueCommand(Render::ERC::CreateRenderObject, RenderCore::DefaultGeometry::Cube(), renderObject); /*create objects in a separate thread
+																											the best way to make based event mes. into render thread*/ 
 		}
 	}
 
-	void Game::Run()
+	void Game::Run() // in main()
 	{
 		assert(PlatformLoop != nullptr);
 
-		m_GameTimer.Reset();
+		m_GameTimer.Reset(); // starting point
 
 		bool quit = false;
 		while (!quit)
 		{
-			m_GameTimer.Tick();
+			m_GameTimer.Tick(); // call tick
 			float dt = m_GameTimer.GetDeltaTime();
 
 			Update(dt);
 			
 			// The most common idea for such a loop is that it returns false when quit is required, or true otherwise
-			quit = !PlatformLoop();
+			quit = !PlatformLoop(); 
 
 			m_renderThread->OnEndFrame();
 		}
@@ -50,23 +51,24 @@ namespace GameEngine
 	{
 		for (int i = 0; i < m_Objects.size(); ++i)
 		{
-			Math::Vector3f pos = m_Objects[i]->GetPosition();
+			Math::Vector3f pos = m_Objects[i]->GetPosition(); //update position 
 
 			// Showcase
 			if (i == 0)
 			{
-				pos.x += 0.5f * dt;
+				pos.x -= 1.5f * dt;
 			}
 			else if (i == 1)
 			{
-				pos.y -= 0.5f * dt;
+				pos.y -= 1.5f * dt;
+				pos.z += 1.0f * dt;
 			}
 			else if (i == 2)
 			{
-				pos.x += 0.5f * dt;
-				pos.y -= 0.5f * dt;
+				pos.x += 3.5f * dt;
+				pos.y -= 2.5f * dt;
 			}
-			m_Objects[i]->SetPosition(pos, m_renderThread->GetMainFrame());
+			m_Objects[i]->SetPosition(pos, m_renderThread->GetMainFrame()); // new position
 		}
 	}
 }

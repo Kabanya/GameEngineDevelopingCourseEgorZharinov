@@ -26,7 +26,7 @@ namespace GameEngine
 		std::function<bool()> PlatformLoop = nullptr;
 
 	private:
-		Core::Timer m_GameTimer;
+		Core::Timer m_GameTimer;  
 		std::unique_ptr<Render::RenderThread> m_renderThread;
 		std::vector<GameObject*> m_Objects;
 	};

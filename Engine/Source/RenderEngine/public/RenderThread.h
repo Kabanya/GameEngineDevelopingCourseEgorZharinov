@@ -38,13 +38,13 @@ namespace GameEngine::Render
 		std::jthread::id m_RenderThreadId;
 		std::jthread::id m_MainThreadId;
 		std::unique_ptr<std::jthread> m_Thread;
-		std::mutex frameMutex[RenderCore::g_FrameBufferCount];
+		std::mutex frameMutex[RenderCore::g_FrameBufferCount]; //mutex array
 
 		RenderEngine* m_RenderEngine;
 
-		size_t m_CurrRenderFrame = 0;
+		size_t m_CurrRenderFrame = 0; //just 2 numbers 
 		size_t m_CurMainFrame = 0;
 
-		std::vector<RenderCommand*> m_commands[RenderCore::g_FrameBufferCount];
+		std::vector<RenderCommand*> m_commands[RenderCore::g_FrameBufferCount]; //vector array
 	};
 }

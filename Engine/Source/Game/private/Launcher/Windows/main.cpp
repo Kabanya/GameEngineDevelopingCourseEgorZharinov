@@ -11,14 +11,14 @@
 #include <crtdbg.h>
 #endif
 
-bool WindowsMessageLoop()
+bool WindowsMessageLoop() // windows command
 {
 	MSG msg = { 0 };
 
-	while (PeekMessage(&msg, 0, 0, 0, PM_REMOVE))
+	while (PeekMessage(&msg, 0, 0, 0, PM_REMOVE)) // ask windows & take them
 	{
-		TranslateMessage(&msg);
-		DispatchMessage(&msg);
+		TranslateMessage(&msg); 
+		DispatchMessage(&msg); //process messages
 
 		if (msg.message == (WM_QUIT | WM_CLOSE))
 		{
@@ -43,7 +43,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 #endif
 
 	GameEngine::Core::g_MainWindowsApplication = new GameEngine::Core::Window();
-	GameEngine::Core::g_MainWindowsApplication->Init(hInstance);
+	GameEngine::Core::g_MainWindowsApplication->Init(hInstance); //! init connect to dispatch
 
 	std::unique_ptr<GameEngine::Game> game = std::make_unique<GameEngine::Game>(&WindowsMessageLoop);
 
