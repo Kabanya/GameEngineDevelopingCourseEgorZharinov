@@ -1,0 +1,7 @@
+[Keyboard]
+FlyLeft=A
+FlyRight=D
+FlyForward=W
+FlyBack=S
+FlyUp=space
+FlyDown=control
