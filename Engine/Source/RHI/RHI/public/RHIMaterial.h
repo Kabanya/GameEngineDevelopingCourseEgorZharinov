@@ -47,7 +47,7 @@ namespace GameEngine::Render
 		protected:
 			HAL::RHIMaterial::ID m_ID = 0;
 
-			RenderCore::Color m_Albedo = RenderCore::Colors::Red;
+			RenderCore::Color m_Albedo = RenderCore::Colors::Blue;
 		};
 	}
 }

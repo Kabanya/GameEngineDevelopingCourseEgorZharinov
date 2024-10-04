@@ -4,6 +4,7 @@
 #include <RenderThread.h>
 #include <Timer.h>
 #include <Window/IWindow.h>
+#include <Vector.h>
 
 namespace GameEngine
 {
@@ -29,5 +30,6 @@ namespace GameEngine
 		Core::Timer m_GameTimer;
 		std::unique_ptr<Render::RenderThread> m_renderThread;
 		std::vector<GameObject*> m_Objects;
+		std::vector<Math::Vector3f> m_CubeVelocities;  // Added this line
 	};
 }
