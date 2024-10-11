@@ -23,5 +23,11 @@ struct CameraPtr
 	GameEngine::Core::Camera* ptr;
 };
 
-void RegisterEcsControlSystems(flecs::world& world);
+struct ShootingComponent
+{
+	float projectileSpeed;
+	float shootCooldown;
+	float lastShootTime;
+};
 
+void RegisterEcsControlSystems(flecs::world& world);
