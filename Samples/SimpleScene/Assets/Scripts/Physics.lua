@@ -10,12 +10,41 @@ local objectsMoved = false
 
 local function ObjectDestroy(it)
     TimePassed = TimePassed + it.delta_time
-    if TimePassed >= 10 and not objectsMoved then 
+    if TimePassed >= 7 and not objectsMoved then 
         for pos, ent in ecs.each(it) do
-           
             pos.y = pos.y + 10000
         end
         objectsMoved = true
+    end
+end
+
+local function collisionSystem(it)
+    for posA, colliderA, velA, entA in ecs.each(it) do
+        for posB, colliderB, velB, entB in ecs.each(it) do
+            if entA ~= entB then
+                local xOverlap = math.max(0, posA.x - colliderA.x / 2 - (posB.x + colliderB.x / 2)) + 
+                               math.max(0, posB.x - colliderB.x / 2 - (posA.x + colliderA.x / 2))
+                local yOverlap = math.max(0, posA.y - colliderA.y / 2 - (posB.y + colliderB.y / 2)) + 
+                               math.max(0, posB.y - colliderB.y / 2 - (posA.y + colliderA.y / 2))
+                local zOverlap = math.max(0, posA.z - colliderA.z / 2 - (posB.z + colliderB.z / 2)) + 
+                               math.max(0, posB.z - colliderB.z / 2 - (posA.z + colliderA.z / 2))
+
+                if xOverlap < colliderA.x + colliderB.x and
+                   yOverlap < colliderA.y + colliderB.y and
+                   zOverlap < colliderA.z + colliderB.z then
+
+                    --reverse cubes
+                    velA.x = -velA.x
+                    velA.y = -velA.y
+                    velA.z = -velA.z
+
+                    velB.x = -velB.x
+                    velB.y = -velB.y
+                    velB.z = -velB.z
+
+                end
+            end
+        end
     end
 end
 
@@ -81,4 +110,6 @@ ecs.system(FrictionSystem, "FrictionSystem", ecs.OnUpdate, "Velocity, FrictionAm
 ecs.system(ShiverSystem, "ShiverSystem", ecs.OnUpdate, "Position, ShiverAmount")
 ecs.system(BounceSystem, "BounceSystem", ecs.OnUpdate, "Position, Velocity, BouncePlane, Bounciness")
 ecs.system(ObjectDestroy, "ObjectDestroy", ecs.OnUpdate, "Position")
+ecs.system(moveSpecificObject, "MoveSpecificObject", ecs.OnUpdate)
+ecs.system(collisionSystem, "CollisionSystem", ecs.OnUpdate, "Position, Collider, ?Velocity")
 

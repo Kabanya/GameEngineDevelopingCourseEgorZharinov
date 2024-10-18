@@ -58,3 +58,10 @@ ECS_STRUCT(Speed,
 	float value;
 });
 
+ECS_STRUCT(Collider,
+{
+	float x;
+	float y;
+	float z;
+});
+
