@@ -51,3 +51,8 @@ struct Speed
 	float value;
 };
 
+struct LifeTime
+{
+	float value;
+};
+
