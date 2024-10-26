@@ -51,6 +51,11 @@ void GameFramework::RegisterComponentsReflection()
 		.member<float>("y")
 		.member<float>("z");
 
+	m_World.component<Size>()
+		.member<float>("x")
+		.member<float>("y")
+		.member<float>("z");
+
 	m_World.component<BouncePlane>()
 		.member<float>("x")
 		.member<float>("y")
@@ -74,6 +79,9 @@ void GameFramework::RegisterComponentsReflection()
 
 	m_World.component<LifeTime>()
 		.member<float>("value");
+
+	m_World.component<ColliderIs>()
+		.member<bool>("value");
 }
 
 void GameFramework::RegisterSystems()

@@ -23,6 +23,13 @@ struct Gravity
 	float z;
 };
 
+struct Size 
+{
+	float x;
+	float y;
+	float z;
+};
+
 struct BouncePlane
 {
 	float x;
@@ -54,5 +61,10 @@ struct Speed
 struct LifeTime
 {
 	float value;
+};
+
+struct ColliderIs
+{
+	bool value;
 };
 
